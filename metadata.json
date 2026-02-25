@@ -1,0 +1,8 @@
+
+{
+  "name": "PromptVault AI",
+  "description": "A high-end gallery for AI image prompts and references. Discover, copy, and generate stunning AI art prompts with ease.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
