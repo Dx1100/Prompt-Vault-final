@@ -1,26 +1,32 @@
-import path from 'path';
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-export default defineConfig(({ mode }) => {
-    const env = loadEnv(mode, process.cwd(), '');
-    return {
-      define: {
-        // This is just generic value for the GEMINI API key.
-        // This is not used at all, and can be ignored!
-        'process.env.API_KEY' : JSON.stringify('api-key-this-is-not-used-can-be-ignored!'),
-      },
-      server: {
-        proxy: {
-          //Target your Node.js backend
-          '/api-proxy': 'http://localhost:5000',
-          
-        },
-      },
-      plugins: react(),
-      resolve: {
-        alias: {
-          '@': path.resolve(__dirname, '.'),
-        }
-      }
-    };
+import path from 'path';
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react()],
+  
+  // Tells Vite to look in the current folder for files like App.tsx and index.html
+  root: './',
+  
+  resolve: {
+    alias: {
+      // Allows you to use '@' to refer to your main folder in imports
+      '@': path.resolve(__dirname, './'),
+    },
+  },
+
+  build: {
+    // Standard folder for Vercel to find your finished website
+    outDir: 'dist',
+    // Cleans the old folder before building a new one
+    emptyOutDir: true,
+    // Ensures Vite finds your index.html at the root
+    rollupOptions: {
+      input: path.resolve(__dirname, 'index.html'),
+    },
+  },
+
+  // Note: Local proxy settings are removed because Vercel handles 
+  // connections through Environment Variables and API routes instead.
 });
